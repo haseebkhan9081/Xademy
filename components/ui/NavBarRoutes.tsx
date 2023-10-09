@@ -41,10 +41,15 @@ variant={"ghost"}>
     Teacher Mode
 </Button></Link>
 )}
-
- <UserButton 
+<div
+className="
+pr-2">
+<UserButton 
+ 
  afterSignOutUrl='/'/>
    
+</div>
+ 
 </div>
 
     </>

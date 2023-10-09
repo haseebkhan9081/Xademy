@@ -10,13 +10,14 @@ export default function layout({children}:{children
      h-full
      
      '>
-        <div
+       <div
         className='
          h-[80px] 
         md:pl-56 
         inset-y-0 
         w-full
          z-50
+         bg-white
         fixed
         '>
             <NavBar/>
@@ -37,8 +38,15 @@ md:flex
 
 </div>
 <main
-className='md:pl-56 pt-[80px]
-h-full'>
+className='
+
+overflow-hidden
+flex
+flex-col
+h-full
+md:ml-56
+mt-[80px]
+'>
   {children}
 </main>
      </div>

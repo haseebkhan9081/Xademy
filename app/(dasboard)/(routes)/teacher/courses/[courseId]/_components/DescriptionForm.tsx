@@ -3,7 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
- 
+import { Textarea } from "@/components/ui/textarea"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -19,26 +20,26 @@ import { useState } from "react"
 import { IconBadge } from "@/components/icon-badge"
 import { Pen } from "lucide-react"
 import toast from "react-hot-toast"
-import { Course } from "@/types/course"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 const formSchema = z.object({
-  Title: z.string().min(10, {
-    message: "Username must be at least 10 characters.",
+  Description: z.string().min(10, {
+    message: "Description must be at least 10 characters.",
   }),
 })
 
 
-interface TitleformProps{
-  data:string;
+
+
+interface DescriptionFormprops{
+  Description:string|null;
   courseId:number
 }
 
 
-
-const TitleForm:React.FC<TitleformProps> = (
+const DescriptionForm:React.FC<DescriptionFormprops> = (
   {
-    data,
+    Description,
     courseId
   }
 ) => {
@@ -48,28 +49,26 @@ const router=useRouter();
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            Title:"",
+            Description:"",
         }
     })
     const {isSubmitting,isValidating}=form.formState;
 
 
 
-const onSubmit=(values:z.infer<typeof formSchema>)=>{
-  setIsEditing(false);
-  console.log(values.Title)
-  console.log("CourseId :",courseId);
-  axios.patch(`/api/courses/${courseId}`,{Title:values.Title,
-  Description:null
-  }).
-  then((response)=>{
-    toast.success("Title was changed succesfully");
-    router.refresh();
-  }).catch((err)=>{
-    toast.error("something went wrong");
-    console.log(err);
-  })
-
+const onSubmit=async(values:z.infer<typeof formSchema>)=>{
+  axios.patch(`/api/courses/${courseId}`,{Title:null,
+    Description:values.Description
+    }).
+    then((response)=>{
+      toast.success(" updated succesfully");
+      router.refresh();
+    }).catch((err)=>{
+      toast.error("something went wrong");
+      console.log(err);
+    }).finally(()=>{
+      setIsEditing(false);
+    })
 }
 
     return (   
@@ -91,17 +90,17 @@ className="space-y-8
 >
 <FormField
           control={form.control}
-          name="Title"
+          name="Description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input 
+                <Textarea 
                 disabled={isSubmitting}
-                placeholder="e.g Intro To Programming.." {...field} />
+                placeholder="e.g in this course.." {...field} />
               </FormControl>
               <FormDescription>
-                what will you teach in this course?
+                write a breif introduction for your course such as what is the requirments...
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -115,9 +114,10 @@ className="space-y-8
 <Button
 disabled={isSubmitting||isValidating}
 type="submit"
->Submit</Button>
+>Save</Button>
 <Button
 type="button"
+variant={"ghost"}
 onClick={()=>{setIsEditing(false)}}
 disabled={isSubmitting}>
   
@@ -128,27 +128,24 @@ disabled={isSubmitting}>
 </form>
  </Form>       
 ):(
+  <div
+  className="
+  flex
+  flex-col
+  w-full">
 <div
 className="
 w-full
 flex
-flex-col
+flex-row
 justify-between
 items-center">
-  <div
-  className="
-  w-full
-  flex
-  flex-row
-  justify-between
-  items-center">
   <span
-  className="text-xl text-slate-800">Title</span>
+  className="text-xl text-slate-800">Description</span>
   
   
-   
-  <Button
-    className=" "
+    <Button
+    className=""
     onClick={()=>{setIsEditing(true)}}
     variant={"ghost"}
     > 
@@ -157,33 +154,38 @@ items-center">
     
    flex
    flex-row
-   justify-end
-   gap-x-1">
+   gap-x-1
+   justify-end">
  
-  <Pen
-  className="w-5 h-5"/> <p>Edit Title</p>
+  <Pen className="w-5 h-5"/> <p>Edit Description</p>
  
  
    </div>
     
     </Button>
-  </div>
-  <div
-  className="
-  flex
-  justify-start
-  w-full
-  pl-0
-  text-slate-700">
-  <p
-   >{data}</p>
-   </div>
-  </div>
-
+  
+</div>
+<div>
+  {Description?(
+    <p
+    className=" 
+    text-slate-400
+    italic">{Description}</p>
+  ):(
+    <p
+    className="
+    text-slate-400
+    italic
+    ">
+      no description
+    </p>
+  )}
+</div>
+</div>
 ) }
  
  </div>
     );
 }
  
-export default TitleForm;
+export default DescriptionForm;

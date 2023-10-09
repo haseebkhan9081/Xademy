@@ -6,8 +6,14 @@ import { redirect, useRouter } from "next/navigation";
 import Chapter from "@/types/chapters";
 import getChaptersbyCourseId from "@/app/actions/getChaptersbyCourseId";
 import { IconBadge } from "@/components/icon-badge";
-import { Layout } from "lucide-react";
+import { CircleDollarSign, Layout, ListChecks,File } from "lucide-react";
 import TitleForm from "./_components/TitleForm";
+import DescriptionForm from "./_components/DescriptionForm";
+import ImageForm from "./_components/ImageForm";
+import CategoryForm from "./_components/CategoryForm";
+import category from "@/types/category";
+import getCategories from "@/app/actions/getCategories";
+import PriceForm from "./_components/PriceForm";
 const CourseIdPage=async(
     {
         params
@@ -19,7 +25,7 @@ const CourseIdPage=async(
 const {userId}=auth();
 let course:Course|null=await getCourseById(params.courseId);
 let chapters:Chapter[]|null=await getChaptersbyCourseId(params.courseId);
-
+let category:category[]|null=await getCategories();
  console.log(chapters);
 const requiredFields = [
   course?.title,
@@ -41,7 +47,8 @@ if(!course || course?.userId!=userId){
 }
 return <>
 <div
-className="p-6">
+className="p-6
+ ">
 
 <div
 className="flex
@@ -81,10 +88,78 @@ text-slate-700
 ">Customize Your Course</h1>
   </div>
 
-  <TitleForm/>
-  </div>
+  <TitleForm
+  data={course.title}
+  courseId={course.id}
+  />
+  <DescriptionForm
+  Description={course.description}
+  courseId={course.id}
 
+  />
+  <ImageForm
+  imageUrl={course?.imageUrl}
+  courseId={course?.id}
+  />
+  <CategoryForm
+  value={course.categoryId}
+  courseId={course.id}
+  options={category?.map((cat)=>({
+    value:cat.id,
+    label:cat.name
+  }))}
+
+  />
+
+  </div>
+<div
+className="flex flex-col
+gap-y-6">
+<div>
+<div
+className="flex flex-row
+items-center
+gap-x-2
+">
+ <IconBadge icon={ListChecks} /><h1
+className="text-xl
+text-slate-700
+"> Course Chapters</h1>
+</div>
+course Chapters to Do
+</div>
+
+<div>
+<div
+className="flex flex-row
+items-center
+gap-x-2
+">
+ <IconBadge icon={CircleDollarSign} /><h1
+className="text-xl
+text-slate-700
+"> Sell Your Course</h1>
+</div>
+ <PriceForm
+ Price={course.price}
+ courseId={course.id}/>
+</div>
+
+<div>
+<div
+className="flex flex-row
+items-center
+gap-x-2
+">
+ <IconBadge icon={File} /><h1
+className="text-xl
+text-slate-700
+"> Course Attachments and Resources</h1>
+</div>
+
+</div>
   </div>  
+  </div>
   </div>
   </div>
   </div>
