@@ -7,7 +7,7 @@ import * as z from "zod"
 import { Button } from "@/components/ui/button"
  
  import { useState } from "react"
- import { ImageIcon, Pen, PlusCircle,File } from "lucide-react"
+ import { ImageIcon, Pen, PlusCircle,File, Loader2,X } from "lucide-react"
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useRouter } from "next/navigation"
@@ -37,21 +37,41 @@ const AttachmentForm:React.FC<AttachmentFormprops> = (
 ) => {
 
 const [isEditing,setIsEditing]=useState(false);
+const [deleteId,setDeleteId]=useState<number|null>(null);
 const router=useRouter();
      
-
+const onDelete=(id:number)=>{
+setDeleteId(id);
+axios.delete(`/api/courses/${courseId}/attachment/${id}`)
+.then((response)=>{
+  toast.success("successfully deleted attachment")
+})
+.catch((err)=>{
+  toast.error("something went wrong")
+  console.log("error while deleting attachment",err)
+})
+.finally(()=>{
+  setDeleteId(null);
+  router.refresh();
+})
+ 
+  
+}
 
 const onSubmit=async(values:z.infer<typeof formSchema>)=>{
-  axios.patch(`/api/courses/${courseId}`,{Title:null,
-    Description:null,imageUrl:values.Url
+
+  console.log("this is uploaded url:",values.Url);
+  axios.post(`/api/courses/${courseId}/attachment`,{ 
+    Url:values.Url
     }).
     then((response)=>{
-      toast.success("Image was updated succesfully");
+      toast.success("attachment was uploaded succesfully");
       router.refresh();
     }).catch((err)=>{
       toast.error("something went wrong");
       console.log(err);
     }).finally(()=>{
+      router.refresh();
       setIsEditing(false);
     })
 }
@@ -144,10 +164,58 @@ items-center">
  <div
  className="
  flex
+ mt-2
  flex-col
  w-full
  ">
- 
+{(Attachments?.length===0||!Attachments)  &&(
+  <p
+  className="text-sm mt-2
+  text-slate-500 italic">
+not attachments
+  </p>
+) }
+
+
+{Attachments&&(
+<div
+className="
+space-y-2">
+{Attachments?.map((attachemnt)=>(
+  <div
+  className="
+  bg-sky-100
+  border-sky-200
+  text-sky-700
+  border
+  rounded-md
+  p-3
+  flex
+  items-center
+  w-full">
+    <File  className="w-4 h-4 mr-2 flex-shrink-0"/>
+<p className="text-xs line-clamp-1">{attachemnt.name}</p>
+{deleteId===attachemnt.id?(
+  <div
+  className="ml-auto">
+<Loader2 className="h-4 w-4 animate-spin" />
+  </div>
+):(
+   
+       <button
+       onClick={()=>onDelete(attachemnt.id) }
+       className="ml-auto hover:opacity-75 transition ">
+        <X className="h-4 w-4 "/>
+
+       </button>
+    
+  
+)}
+  </div>
+
+))}
+</div>
+)}
  </div>
 </div>
 ) }

@@ -29,7 +29,7 @@ const {userId}=auth();
 let course:Course|null=await getCourseById(params.courseId);
 let chapters:Chapter[]|null=await getChaptersbyCourseId(params.courseId);
 let category:category[]|null=await getCategories();
-let attachments:Attachment[]|null=await getAttachmentById(params.courseId);
+let Attachments:Attachment[]|null=await getAttachmentById(params.courseId);
 const requiredFields = [
   course?.title,
   course?.description,
@@ -160,7 +160,7 @@ text-slate-700
 "> Attachments & Resources</h1>
 </div>
 <AttachmentForm
-Attachments={attachments}
+Attachments={Attachments}
 courseId={params.courseId}
 />
 </div>
