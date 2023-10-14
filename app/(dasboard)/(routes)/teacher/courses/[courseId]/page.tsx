@@ -14,6 +14,9 @@ import CategoryForm from "./_components/CategoryForm";
 import category from "@/types/category";
 import getCategories from "@/app/actions/getCategories";
 import PriceForm from "./_components/PriceForm";
+import AttachmentForm from "./_components/AttachmentForm";
+import { Attachment } from "@/types/attachment";
+import getAttachmentById from "@/app/actions/getAttachmentsbyId";
 const CourseIdPage=async(
     {
         params
@@ -26,7 +29,7 @@ const {userId}=auth();
 let course:Course|null=await getCourseById(params.courseId);
 let chapters:Chapter[]|null=await getChaptersbyCourseId(params.courseId);
 let category:category[]|null=await getCategories();
- console.log(chapters);
+let attachments:Attachment[]|null=await getAttachmentById(params.courseId);
 const requiredFields = [
   course?.title,
   course?.description,
@@ -154,9 +157,12 @@ gap-x-2
  <IconBadge icon={File} /><h1
 className="text-xl
 text-slate-700
-"> Course Attachments and Resources</h1>
+"> Attachments & Resources</h1>
 </div>
-
+<AttachmentForm
+Attachments={attachments}
+courseId={params.courseId}
+/>
 </div>
   </div>  
   </div>

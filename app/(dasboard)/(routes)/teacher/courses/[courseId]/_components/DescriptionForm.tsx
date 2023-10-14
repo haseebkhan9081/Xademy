@@ -170,6 +170,7 @@ items-center">
     <p
     className=" 
     text-slate-400
+    line-clamp-1
     italic">{Description}</p>
   ):(
     <p
