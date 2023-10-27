@@ -17,6 +17,7 @@ import PriceForm from "./_components/PriceForm";
 import AttachmentForm from "./_components/AttachmentForm";
 import { Attachment } from "@/types/attachment";
 import getAttachmentById from "@/app/actions/getAttachmentsbyId";
+import ChaptersForm from "./_components/ChaptersForm";
 const CourseIdPage=async(
     {
         params
@@ -129,7 +130,10 @@ className="text-xl
 text-slate-700
 "> Course Chapters</h1>
 </div>
-course Chapters to Do
+<ChaptersForm
+Chapters={chapters||[]}
+courseId={course?.id}
+/>
 </div>
 
 <div>

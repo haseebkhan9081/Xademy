@@ -3,8 +3,9 @@ import Chapter from "@/types/chapters"
 const getChaptersbyCourseId=
 async(courseId:number):Promise<Chapter[]|null>=>{
 
-return await db.$queryRaw`
+return await db.$queryRaw<Chapter[]|null>`
 SELECT * from Chapter where courseId=${courseId}
+order by position
 `;
 
 }
