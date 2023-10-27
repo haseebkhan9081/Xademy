@@ -97,7 +97,9 @@ rounded-md
 ">
 {isUpdating&&(
   <div
-  className="w-full  p-6 rounded-md h-full  absolute justify-center items-center flex bg-slate-50 text-sky-700">
+  className="w-full  p-6 rounded-md h-full  
+  absolute justify-center items-center flex 
+  bg-slate-50/50 text-sky-700 top-0 left-0 ">
 <Loader2 className="w-6 h-6 animate-spin"/>
   </div>
 )}
