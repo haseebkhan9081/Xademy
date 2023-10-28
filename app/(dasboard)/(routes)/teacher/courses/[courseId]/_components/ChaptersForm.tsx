@@ -55,7 +55,9 @@ const router=useRouter();
     const {isSubmitting,isValidating}=form.formState;
 
 
-
+const onEdit=(id:number)=>{
+router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+}
 const onSubmit=async(values:z.infer<typeof formSchema>)=>{
   axios.post(`/api/courses/${courseId}/chapter`,{Title:values.Title}).
     then((response)=>{
@@ -197,7 +199,7 @@ className="italic text-slate-400 ">
 <ChaptersList
 items={Chapters||[]}
 onReorder={onReorder}
-onEdit={()=>{}}
+onEdit={onEdit}
 />
 
 <div
