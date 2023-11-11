@@ -30,7 +30,6 @@
     "mysql2": "^3.6.1",
     "net": "^1.0.2",
     "next": "^13.5.4",
-    "prisma": "^5.3.1",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "^7.46.2",
@@ -43,7 +42,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@prisma/client": "^5.3.1",
+    "@prisma/client": "^5.5.2",
     "@types/json-bigint": "^1.0.2",
     "@types/node": "latest",
     "@types/react": "latest",
@@ -52,6 +51,7 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
+    "prisma": "^5.5.2",
     "tailwindcss": "latest",
     "typescript": "latest"
   }
