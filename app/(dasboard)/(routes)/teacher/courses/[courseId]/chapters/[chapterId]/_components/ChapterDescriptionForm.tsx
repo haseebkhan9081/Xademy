@@ -3,7 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
- 
+import { Textarea } from "@/components/ui/textarea"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -19,27 +20,29 @@ import { useState } from "react"
 import { IconBadge } from "@/components/icon-badge"
 import { Pen } from "lucide-react"
 import toast from "react-hot-toast"
-import { Course } from "@/types/course"
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import { Editor } from "@/components/editor"
+import { Preview } from "@/components/preview"
 const formSchema = z.object({
-  Title: z.string().min(10 )
+  Description: z.string().min(1),
 })
 
 
-interface ChapterTitleFormProps{
-  data:string;
+
+
+interface ChapterDescriptionFormprops{
+  ChapterDescription:string|null;
   courseId:number;
-  ChapterId:number
+  chapterId:number
 }
 
 
-
-const ChapterTitleForm:React.FC<ChapterTitleFormProps> = (
+const ChapterDescriptionForm:React.FC<ChapterDescriptionFormprops> = (
   {
-    data,
+    ChapterDescription,
     courseId,
-    ChapterId
+    chapterId
   }
 ) => {
 
@@ -48,29 +51,26 @@ const router=useRouter();
     const form=useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
-            Title:"",
+            Description:"",
         }
     })
     const {isSubmitting,isValidating}=form.formState;
 
 
 
-const onSubmit=(values:z.infer<typeof formSchema>)=>{
-  setIsEditing(false);
-  console.log(values.Title)
-  console.log("CourseId :",courseId);
-  axios.patch(`/api/courses/${courseId}/chapter/${ChapterId}`,{
-  Title:values.Title,
-  Description:null
-  }).
-  then((response)=>{
-    toast.success("chapter updated succesfully");
-    router.refresh();
-  }).catch((err)=>{
-    toast.error("something went wrong");
-    console.log(err);
-  })
-
+const onSubmit=async(values:z.infer<typeof formSchema>)=>{
+  axios.patch(`/api/courses/${courseId}/chapter/${chapterId}`,{Title:null,
+    Description:values.Description
+    }).
+    then((response)=>{
+      toast.success(" updated succesfully");
+      router.refresh();
+    }).catch((err)=>{
+      toast.error("something went wrong");
+      console.log(err);
+    }).finally(()=>{
+      setIsEditing(false);
+    })
 }
 
     return (   
@@ -80,7 +80,6 @@ mt-3
 bg-slate-50
 p-6
 rounded-md
-w-full
 ">
 
 {isEditing ? (
@@ -93,17 +92,16 @@ className="space-y-8
 >
 <FormField
           control={form.control}
-          name="Title"
+          name="Description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input 
-                disabled={isSubmitting}
-                placeholder="e.g Introduction.." {...field} />
+                <Editor
+                 {...field} />
               </FormControl>
               <FormDescription>
-                what will you teach in this chapter?
+                write a breif introduction for your chapter...
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -117,7 +115,7 @@ className="space-y-8
 <Button
 disabled={isSubmitting||isValidating}
 type="submit"
->Submit</Button>
+>Save</Button>
 <Button
 type="button"
 variant={"ghost"}
@@ -131,27 +129,24 @@ disabled={isSubmitting}>
 </form>
  </Form>       
 ):(
+  <div
+  className="
+  flex
+  flex-col
+  w-full">
 <div
 className="
 w-full
 flex
-flex-col
+flex-row
 justify-between
 items-center">
-  <div
-  className="
-  w-full
-  flex
-  flex-row
-  justify-between
-  items-center">
   <span
-  className="text-xl text-slate-800">Title</span>
+  className="text-xl text-slate-800">Description</span>
   
   
-   
-  <Button
-    className=" "
+    <Button
+    className=""
     onClick={()=>{setIsEditing(true)}}
     variant={"ghost"}
     > 
@@ -160,33 +155,44 @@ items-center">
     
    flex
    flex-row
-   justify-end
-   gap-x-1">
+   gap-x-1
+   justify-end">
  
-  <Pen
-  className="w-5 h-5"/> <p>Edit Title</p>
+  <Pen className="w-5 h-5"/> <p>Edit Description</p>
  
  
    </div>
     
     </Button>
-  </div>
-  <div
-  className="
-  flex
-  justify-start
-  w-full
-  pl-0
-  text-slate-700">
-  <p
-   >{data}</p>
-   </div>
-  </div>
+  
+</div>
+<div>
+  {ChapterDescription?(
+    <div
+    className=" 
+    text-slate-600
+    line-clamp-1
+    italic">
 
+      <Preview
+      value={ChapterDescription}
+      />
+    </div>
+  ):(
+    <p
+    className="
+    text-slate-400
+    italic
+    ">
+      no description
+    </p>
+  )}
+</div>
+</div>
 ) }
  
  </div>
     );
 }
  
-export default ChapterTitleForm;
+export default ChapterDescriptionForm;

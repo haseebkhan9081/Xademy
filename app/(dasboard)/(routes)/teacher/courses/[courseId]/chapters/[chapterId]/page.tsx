@@ -2,10 +2,12 @@ import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import Chapter from "@/types/chapters";
 import { auth } from "@clerk/nextjs";
-import { ChevronLeft, Layout } from "lucide-react";
+import { ChevronLeft, Eye, Layout } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ChapterTitleForm from "./_components/ChapterTitleForm";
+import ChapterDescriptionForm from "./_components/ChapterDescriptionForm";
+import ChapterAccessForm from "./_components/ChapterAccessForm";
 
 const ChapterId=async(
     {params}:{params:{chapterId:number,courseId:number}}
@@ -36,7 +38,7 @@ const requiredFields = [
 
   const completionText = `(${completedFields}/${totalFields})`;
 return (
-<div className="w-full">
+<div className="p-6">
 <Link
 className="flex text-slate-600 
 flex-row items-center mt-2 gap-x-1"
@@ -45,12 +47,15 @@ href={`/teacher/courses/${params.courseId}`}>
  <p className=" ">Back to main menu</p>    
 </Link>    
 <div
-className="p-6 w-full ">
+className="flex
+justify-between items-center ">
    
  <div
- className="flex items-center justify-between">
-<div
-className="flex flex-col gap-y-2">
+ className=" flex
+ flex-col
+ items-start
+ gap-y-1">
+ 
     <h1
     className="text-2xl text-slate-700 font-bold">
         Chapter Creation
@@ -59,13 +64,13 @@ className="flex flex-col gap-y-2">
     className="text-slate-400 ">
         complete all fields {completionText}
     </span>
-</div>
- </div>
+ 
+  
 <div
-className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 w-full">
- <div className="flex flex-row w-full justify-between ">
- <div
- className="space-y-6 flex flex-col ">
+className="grid grid-cols-1 md:grid-cols-2
+gap-6 mt-16 ">
+ 
+<div>  
 <div
 className="flex items-center gap-x-2 flex-row">
 <IconBadge icon={Layout}/>
@@ -77,19 +82,42 @@ data={chapter[0]?.title}
 courseId={params?.courseId}
 ChapterId={params?.chapterId}
 />
+<ChapterDescriptionForm
+ChapterDescription={chapter[0]?.description}
+chapterId={params?.chapterId}
+courseId={params?.courseId}
+/>
+  
+<div>
+<div className="mt-2 flex flex-row items-center space-x-2">
+<IconBadge icon={Eye}/>
+<h2>
+ Access settings   
+</h2>
+
+</div>
+<ChapterAccessForm
+IsFree={chapter[0].isFree}
+courseId={params?.courseId}
+chapterId={params?.chapterId}
+/>
+</div>
+
+{/* First column end here */}
+ </div>
 
 
- </div>
- </div>
+
 </div>
 
 
+</div>
 </div>
 </div>
 );
 
 
-}
+ }
 
 
 
