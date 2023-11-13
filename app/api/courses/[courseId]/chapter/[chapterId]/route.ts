@@ -4,12 +4,64 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import Mux from "@mux/mux-node";
 import { MuxData } from "@/types/MuxData";
+import Chapter from "@/types/chapters";
 
 const {Video}=new Mux(
     process.env.MUX_TOKEN_ID!,
     process.env.MUX_TOKEN_SECRET!,
 )
+export async function DELETE(
+    req:Request,
+    {params}:{params:{courseId:number,chapterId:number}}   
+    
+){
+try{
+const {userId}=auth();
+if(!userId){
+    return new NextResponse("Unauthorized",{status:401});
+}
+const course:Course[]=await db.$queryRaw<Course[]>`
+select * from Course where id=${params.courseId}`;
 
+if(course[0].userId!=userId){
+    return new NextResponse("Unauthorized",{status:402});
+}
+
+const chapter:Chapter[]=await db.$queryRaw<Chapter[]>`
+select * from Chapter where id=${params.chapterId}
+and courseId=${params.courseId}`;
+
+if(!chapter[0]){
+    return new NextResponse("Invalid Request",{status:404});
+}
+
+if(chapter[0].videoUrl){
+    const ExistingMuxData:MuxData[]=await db.$queryRaw<MuxData[]>`
+    select * from MuxData
+    where chapterId=${params.chapterId}
+    `;
+
+   if(ExistingMuxData[0]){
+    await Video.Assets.del(ExistingMuxData[0].assetId);
+    await db.$queryRaw`
+    delete from MuxData where 
+    id=${ExistingMuxData[0].id}`;
+   } 
+}
+
+await db.$queryRaw`
+delete from Chapter where id=${params.chapterId}
+`;
+
+return new NextResponse("Deleted Successfully ",{status:200});
+
+}catch(err:any){
+console.log("[CHAPTER DELETE ERROR]",err);
+return new NextResponse("Internal Server Error",{status:500});
+}
+
+
+}
 export async function PATCH(
  req:Request,
  {params}:{params:{courseId:number,

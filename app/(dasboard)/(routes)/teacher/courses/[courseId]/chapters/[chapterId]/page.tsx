@@ -12,6 +12,7 @@ import ChapterVideoForm from "./_components/ChapterVideoForm";
 import { MuxData } from "@/types/MuxData";
 import Banner from "@/components/banner";
 import ChapterActions from "./_components/ChapterActions";
+import { boolean } from "zod";
 const ChapterId=async(
     {params}:{params:{chapterId:number,courseId:number}}
 )=>{
@@ -44,6 +45,7 @@ const requiredFields = [
   const completedFields=requiredFields.filter(Boolean).length;
 
   const completionText = `(${completedFields}/${totalFields})`;
+const isComplete=requiredFields.every(Boolean);
 return (
 <>
 {!chapter[0].isPublished &&(
@@ -90,7 +92,7 @@ justify-between items-center ">
     courseId={params?.courseId}
     chapterid={params?.chapterId}
     isPublished={chapter[0]?.isPublished}
-     
+     disabled={!isComplete}
     />
     </div>
 <div
