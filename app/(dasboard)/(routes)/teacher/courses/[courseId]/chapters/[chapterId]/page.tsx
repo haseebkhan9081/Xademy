@@ -10,6 +10,8 @@ import ChapterDescriptionForm from "./_components/ChapterDescriptionForm";
 import ChapterAccessForm from "./_components/ChapterAccessForm";
 import ChapterVideoForm from "./_components/ChapterVideoForm";
 import { MuxData } from "@/types/MuxData";
+import Banner from "@/components/banner";
+import ChapterActions from "./_components/ChapterActions";
 const ChapterId=async(
     {params}:{params:{chapterId:number,courseId:number}}
 )=>{
@@ -43,6 +45,19 @@ const requiredFields = [
 
   const completionText = `(${completedFields}/${totalFields})`;
 return (
+<>
+{!chapter[0].isPublished &&(
+    <Banner
+    variant={"warning"}
+    label="the chapter is Unpublished,it will not be visible in the course"
+    />
+)}
+{/* {chapter[0].isPublished &&(
+    <Banner
+    variant={"success"}
+    label="the chapter is published,it will be visible in the course"
+    />
+)} */}
 <div className="p-6">
 <Link
 className="flex text-slate-600 
@@ -59,8 +74,9 @@ justify-between items-center ">
  className=" flex
  flex-col
  items-start
- gap-y-1">
- 
+ gap-y-1 w-full">
+    <div className="flex flex-row w-full items-center justify-between">
+ <div>
     <h1
     className="text-2xl text-slate-700 font-bold">
         Chapter Creation
@@ -69,8 +85,14 @@ justify-between items-center ">
     className="text-slate-400 ">
         complete all fields {completionText}
     </span>
- 
-  
+    </div>
+    <ChapterActions 
+    courseId={params?.courseId}
+    chapterid={params?.chapterId}
+    isPublished={chapter[0]?.isPublished}
+     
+    />
+    </div>
 <div
 className="grid grid-cols-1 md:grid-cols-2
 gap-6 mt-16 ">
@@ -142,7 +164,7 @@ text-xl font-medium  ">
 </div>
 </div>
 </div>
-);
+</>);
 
 
  }
