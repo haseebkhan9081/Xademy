@@ -3,13 +3,21 @@ import { UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, SearchIcon } from "lucide-react";
+import { Input } from "./input";
+import { cn } from "@/lib/utils";
+import { SearchInput } from "../Search-input";
 
 const NavBarRoutes=()=>{
     const pathname=usePathname();
 const isTeacher=pathname.startsWith("/teacher");
-
+const isSearcPage=pathname==="/search";
 return <>
+{isSearcPage&&(
+<div className="hidden md:block w-full">
+<SearchInput/>
+ </div>
+)}
 <div
 className="
 flex
