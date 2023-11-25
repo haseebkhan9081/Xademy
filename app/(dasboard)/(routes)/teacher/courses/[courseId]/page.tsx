@@ -18,6 +18,9 @@ import AttachmentForm from "./_components/AttachmentForm";
 import { Attachment } from "@/types/attachment";
 import getAttachmentById from "@/app/actions/getAttachmentsbyId";
 import ChaptersForm from "./_components/ChaptersForm";
+import Banner from "@/components/banner";
+import Actions from "./_components/Actions";
+import { boolean } from "zod";
 const CourseIdPage=async(
     {
         params
@@ -37,10 +40,10 @@ const requiredFields = [
   course?.imageUrl,
   course?.price,
   course?.categoryId,
-  chapters?.some((chapter)=>{chapter.isPublished})
+  chapters?.some((chapter)=>{return chapter.isPublished===1})
    ];
 const totalFileds=requiredFields.length;
-
+console.log( chapters?.some((chapter)=>{return chapter.isPublished===1}) );
 
 const completedFields=requiredFields.filter(Boolean).length;
 
@@ -49,7 +52,20 @@ const completetionText=`(${completedFields}/${totalFileds})`;
 if(!course || course?.userId!=userId){
   return redirect("/");
 }
+console.log("the categories",category);
+const isComplete=requiredFields.every(Boolean);
 return <>
+{!course.isPublished?(
+  <Banner
+  label="this course is not published,it will not be visible to students"
+  variant={"warning"}
+  />
+):(
+ <Banner
+ label="this course is published.it will be visible to students"
+ variant={"success"}
+ /> 
+)}
 <div
 className="p-6
  ">
@@ -63,7 +79,8 @@ justify-between items-center">
    flex-col
    items-start
    gap-y-1">
-    <h1
+    <div className="flex flex-row w-full justify-between items-center">
+<div><h1
     className="text-3xl font-semibold
     text-slate-700">
       Set Up Course
@@ -73,7 +90,16 @@ justify-between items-center">
     text-slate-400">
       Complete all fields {completetionText}
     </span>
-   
+   </div>
+<div>
+  <Actions
+  disabled={!isComplete}
+  courseId={params.courseId}
+  isPublished={course.isPublished}
+  />
+</div>
+    </div>
+    
    
 <div
 

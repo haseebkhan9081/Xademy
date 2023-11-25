@@ -48,18 +48,17 @@ const requiredFields = [
 const isComplete=requiredFields.every(Boolean);
 return (
 <>
-{!chapter[0].isPublished &&(
+{(!chapter[0].isPublished)?(
     <Banner
     variant={"warning"}
     label="the chapter is Unpublished,it will not be visible in the course"
     />
-)}
-{/* {chapter[0].isPublished &&(
+):(
     <Banner
     variant={"success"}
     label="the chapter is published,it will be visible in the course"
     />
-)} */}
+)} 
 <div className="p-6">
 <Link
 className="flex text-slate-600 
