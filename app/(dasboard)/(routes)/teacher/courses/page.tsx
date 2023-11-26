@@ -1,4 +1,4 @@
-import {   columns } from "./_components/columns"
+import { columns } from "./_components/columns"
 import { DataTable } from "../courses/_components/data-table"
 
 import { Button } from "@/components/ui/button";
