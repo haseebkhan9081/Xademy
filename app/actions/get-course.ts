@@ -60,7 +60,13 @@ SELECT
     JSON_ARRAYAGG(
         JSON_OBJECT(
             'id', ch.id,
-            'title', ch.title
+            'title', ch.title,
+            'description',ch.description,
+            'videoUrl',ch.videoUrl,
+            'position',ch.position,
+            'isPublished',ch.isPublished,
+            'isFree',ch.isFree,
+            'courseId',ch.courseId 
         )
     ) AS chapters,
     JSON_ARRAYAGG(
