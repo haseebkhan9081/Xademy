@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import Chapter from "@/types/chapters";
 import { auth } from "@clerk/nextjs";
 import { redirect, useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
@@ -25,11 +26,15 @@ const course=await db.$queryRaw`select
 if(!course){
     return new NextResponse("Unauthorized",{status:401});
 }
-
+const chapters:Chapter[]=await db.$queryRaw`
+select * from Chapter where courseId=${courseId}`;
+let positon=1;
+let position=(chapters[chapters.length-1].position)+1;
+if(positon){
+    positon=position
+}
 await db.$queryRaw`
-insert into Chapter(title,position,courseId) values(${Title},${courseId},${courseId})`;
-
-
+insert into Chapter(title,position,courseId) values(${Title},${positon},${courseId})`;
 return new NextResponse("succesfully created chapter",{status:200});
 
 }catch(err:any){

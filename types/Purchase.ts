@@ -1,4 +1,4 @@
-export interface Purchase {
+export default interface Purchase {
     id: number;
     userId: string;
     courseId: number;

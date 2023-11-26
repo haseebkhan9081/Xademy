@@ -49,8 +49,11 @@ LEFT JOIN
 where c.id=${params.courseId}
     GROUP BY
     c.id;  
- `;  
-console.log("Course Id Page",course[0].chapters[0].id);
+ 
+    `;  
+ if(!course[0]){
+    return redirect("/");
+ }
     return redirect(`/courses/${course[0].id}/chapters/${course[0]?.chapters?.[0].id}`);
 }
 
