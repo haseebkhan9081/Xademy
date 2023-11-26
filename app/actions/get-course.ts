@@ -1,20 +1,20 @@
 import { db } from "@/lib/db";
-import { Purchase } from "@/types/Purchase";
+import  Purchase  from "@/types/Purchase";
 import category from "@/types/category"
 import Chapter from "@/types/chapters";
 import { Course } from "@/types/course";
 import { getProgress } from "./getProgress";
 
 type CourseWithProgressWithCategory =Course &{
-   category :category|null;
-   chapters:{id:number}[];
-   progress:number|null; 
-}
+    Category :category|null;
+    Chapters:Chapter[];
+    progress:number|null
+ }
 
  
   type CourseWithDetails=Course & {
-       category:category|null;
-      chapters: {id: number}[];
+       Category:category|null;
+      Chapters: Chapter[];
       purchases: {id: number;}[];
     }
     
