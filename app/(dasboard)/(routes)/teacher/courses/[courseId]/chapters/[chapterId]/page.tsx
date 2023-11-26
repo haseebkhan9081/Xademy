@@ -90,7 +90,7 @@ justify-between items-center ">
     <ChapterActions 
     courseId={params?.courseId}
     chapterid={params?.chapterId}
-    isPublished={chapter[0]?.isPublished}
+    isPublished={!!chapter[0]?.isPublished}
      disabled={!isComplete}
     />
     </div>
