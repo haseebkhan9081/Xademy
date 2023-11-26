@@ -23,7 +23,7 @@ const data:category[]=await db.$queryRaw`
 select * from Category`;
     
     const courses=await getCourses({userId,...searchParams});
-    console.log("serach page courses",courses);
+    // console.log("serach page courses",courses);
     return ( <>
     <div className="px-6 pt-6 md:hidden md:mb-0 block">
 <SearchInput/>

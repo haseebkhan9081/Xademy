@@ -11,9 +11,10 @@ import { SearchInput } from "../Search-input";
 const NavBarRoutes=()=>{
     const pathname=usePathname();
 const isTeacher=pathname.startsWith("/teacher");
-const isSearcPage=pathname==="/search";
+const isSearchPage=pathname==="/search";
+const iscoursePage=pathname.includes("/courses")
 return <>
-{isSearcPage&&(
+{isSearchPage&&(
 <div className="hidden p-6 md:block w-full">
 <SearchInput/>
  </div>
@@ -25,7 +26,7 @@ items-center
 flex-row
 gap-2
 ">
-    {isTeacher?(
+    {isTeacher || iscoursePage?(
    <Link
    href="/">
    <Button

@@ -65,34 +65,38 @@ SELECT
     ) AS chapters,
     JSON_ARRAYAGG(
         JSON_OBJECT(
-            'id', p.id
+            'id', p.id,
+            'userId',p.userId,
+            'courseId',p.courseId
         )
     ) AS purchases
 FROM 
     Course c
 LEFT JOIN 
+        Purchase p ON c.id = p.courseId and p.userId=${userId} and p.id is not null
+LEFT JOIN   
     Category cat ON c.categoryId = cat.id
 LEFT JOIN 
     Chapter ch ON c.id = ch.courseId AND ch.isPublished = ${1}
-LEFT JOIN 
-    Purchase p ON c.id = p.courseId and p.userId=${userId}
-WHERE 
+WHERE  
     c.isPublished = ${1}  
     AND c.title LIKE ${'%'+title+'%'}
     AND c.categoryId =${categoryId}
 GROUP BY
     c.id;
  `;
-console.log("getCourses ",courses[0].purchases );
+console.log("getCourses ",courses[2].purchases );
 const coursesWithProgress:CourseWithProgressWithCategory[]=await 
 Promise.all(
-    courses.map(async(course)=>{
-       if(course.purchases.length===1 && course.purchases[0].id===null){
+    courses.map(async(course,index)=>{
+       if(course.purchases.length>=1 && course.purchases.every(purchase => purchase.id === null)){
+        console.log("this course was not purchased")
         return {
             ...course,
             progress:null,
         }
        }
+       console.log("this course was purchased",course.purchases);
        const progressPercentage=await getProgress(userId,course.id); 
        return {
         ...course,

@@ -6,9 +6,9 @@ import { CheckCircle, Lock, PlayCircle } from "lucide-react";
 import {cn} from "@/lib/utils";
 interface CourseSidebarItemProps{
     label:string;
-    id:string;
+    id:number;
     isCompleted:boolean;
-    courseId:string;
+    courseId:number;
     isLocked:boolean;
 }
 export const CourseSidebarItem=({
@@ -21,7 +21,7 @@ isLocked
 const pathname=usePathname();
 const router=useRouter();
 const Icon=isLocked?Lock:(isCompleted?CheckCircle:PlayCircle);
-const isActive=pathname.includes(id);
+const isActive=pathname.includes(String(id));
 const onClick=()=>{
     router.push(`/courses/${courseId}/chapters/${id}`);
 }

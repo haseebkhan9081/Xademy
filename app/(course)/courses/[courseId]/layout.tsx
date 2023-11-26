@@ -7,6 +7,7 @@ import { UserProgress } from "@/types/userProgress";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { CourseSidebar } from "./_components/course-sidebar";
+import CourseNavbar from "./_components/course-navbar";
 type CourseWithDetails=Course & {
    chapters: (Chapter &{
     userProgress:UserProgress[]|null
@@ -85,7 +86,7 @@ const progressCount=await getProgress(userId,course[0].id);
     <div className="h-full">
     <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
 <CourseNavbar
-course={course}
+course={course[0]}
 progressCount={progressCount}
 />
     </div>

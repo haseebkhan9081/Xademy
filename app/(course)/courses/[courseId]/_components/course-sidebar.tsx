@@ -19,7 +19,7 @@ export const CourseSidebar=async({course,progressCount}:CourseSidebarProps)=>{
     const purchase:Purchase[]=await db.$queryRaw<Purchase[]>`
    select * from Purchase where userId=${userId} and courseId=${course.id}`
    
-   console.log("course_sidebar",purchase[0]);
+   console.log("course_sidebar purchase",purchase[0]);
 
    return (
         <div className="h-full border-r flex flex-col overflow-y-auto
@@ -39,7 +39,7 @@ export const CourseSidebar=async({course,progressCount}:CourseSidebarProps)=>{
     label={chapter.title}
     isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
     courseId={course.id}
-    isLocked={!!chapter.isFree && !purchase[0]}
+    isLocked={!!!chapter.isFree && !purchase[0]}
 
     />
 ))}
