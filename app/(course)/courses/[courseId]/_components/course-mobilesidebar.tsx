@@ -4,6 +4,10 @@ import { UserProgress } from "@/types/userProgress";
 import { Sheet,SheetContent,SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { CourseSidebar } from "./course-sidebar";
+import { useRouter } from "next/navigation";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { useState } from "react";
+import axios from "axios";
 interface CourseMobileSidebarProps{
     course: Course & {
         chapters: (Chapter &{
@@ -22,8 +26,9 @@ export const CourseMobileSidebar=({
 
 
     return(
-       <> <Sheet>
-       <SheetTrigger>
+       <> <div
+       ><Sheet >
+       <SheetTrigger className="md:hidden block">
         <Menu/>
        </SheetTrigger>
 <SheetContent side={"left"} className="p-0 bg-white w-72">
@@ -32,5 +37,6 @@ export const CourseMobileSidebar=({
     progressCount={progressCount}/>
 </SheetContent>
         </Sheet>
+        </div>
         </>)
 }

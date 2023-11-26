@@ -18,11 +18,11 @@ if(!user?.id||!user||!user?.emailAddresses?.[0]?.emailAddress){
 const course:Course[]=await db.$queryRaw`
 select * from Course where id=${params.courseId}
 and isPublished=${1}`;
-
+console.log("[COURSE CHECKOUT COURSE]",course[0]);
 const purchase:Purchase[]=await db.$queryRaw`
 select * from Purchase where userId=${user?.id}
 and courseId=${params.courseId}`;
-
+console.log("[COURSE CHECKOUT PURCHASE]",purchase[0]);
 if(purchase[0] && purchase[0]?.id){
     return new NextResponse("Already Purchased",{status:400});
 }
@@ -49,7 +49,8 @@ const line_items:Stripe.Checkout.SessionCreateParams.LineItem[]=[
 let stripeCustomer:StripeCustomer[]=await db.$queryRaw`
 select * from StripeCustomer where
 userId=${user?.id}`;
-if(!stripeCustomer[0].id && !stripeCustomer[0]){
+console.log("[COURSE CHECKOUT STRIPECUSTOMER]",stripeCustomer[0]);
+if(!stripeCustomer[0]?.id && !stripeCustomer[0]){
 let customer=await stripe.customers.create({
     email:user.emailAddresses[0].emailAddress,
 });
@@ -67,7 +68,7 @@ const session=await stripe.checkout.sessions.create({
     success_url:`${process.env.NEXT_PUBLIC_APP_URL}/courses/${course[0].id}?success=1`,
     cancel_url:`${process.env.NEXT_PUBLIC_APP_URL}/courses/${course[0].id}?canceled=1`,
     metadata:{
-        courseId:course[0].id,
+        courseId:course[0]?.id,
         userId:user.id,
     }   
 })

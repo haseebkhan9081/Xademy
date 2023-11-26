@@ -4,6 +4,7 @@ import { Badge } from "./ui/badge";
 import { IconBadge } from "./icon-badge";
 import { BookOpen } from "lucide-react";
 import { formatPrice } from "@/lib/format";
+import CourseProgress from "@/app/(course)/courses/[courseId]/_components/course-progress";
 
 interface CourseCardProps{
     id:number;
@@ -60,7 +61,11 @@ md:text-xs">
 </div>
 {progress!==null?(
 <div>
-    Todo Progress component
+   <CourseProgress
+   size="sm"
+   value={progress}
+   variant={progress===100?"success":"default"}
+   />
 </div>
 ):(
 <p>

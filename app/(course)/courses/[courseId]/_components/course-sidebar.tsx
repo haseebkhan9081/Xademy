@@ -1,10 +1,11 @@
 import { db } from "@/lib/db";
-import { Purchase } from "@/types/Purchase";
+import Purchase  from "@/types/Purchase";
 import Chapter from "@/types/chapters";
 import { Course } from "@/types/course";
 import { UserProgress } from "@/types/userProgress";
 import { auth } from "@clerk/nextjs";
 import { CourseSidebarItem } from "./course-sidebar-item";
+import CourseProgress from "./course-progress";
 
 interface CourseSidebarProps  {
     course:Course &{
@@ -29,7 +30,15 @@ export const CourseSidebar=async({course,progressCount}:CourseSidebarProps)=>{
                 className="font-semibold">
                     {course.title}
                     </h1>
-                    {/* check purchase and add progress */}
+                   {purchase[0] && (
+                    <div>
+                        <CourseProgress
+                        variant="success"
+                        value={progressCount}
+                        size="default"
+                        />
+                    </div>
+                   )}
             </div>
             <div className="flex flex-col w-full">
 {course.chapters.map((chapter)=>(

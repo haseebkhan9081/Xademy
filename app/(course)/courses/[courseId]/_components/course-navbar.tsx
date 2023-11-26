@@ -24,6 +24,7 @@ const CourseNavbar=({
 return (
 <div className="h-full border-b p-4 justify-between  flex items-center bg-white shadow-sm">
 <CourseMobileSidebar
+
 course={course}
 progressCount={progressCount}/>
 <NavBarRoutes/>

@@ -1,10 +1,11 @@
 import { Course } from "@/types/course";
 import category from "@/types/category";
 import { CourseCard } from "./course-card";
+import Chapter from "@/types/chapters";
 type CourseWithProgressWithCategory =Course &{
-    category :category|null;
-    chapters:{id:number}[];
-    progress:number|null; 
+    Category :category|null;
+    Chapters:Chapter[];
+    progress:number|null
  }
  interface CourseListProps{
     items:CourseWithProgressWithCategory[];
@@ -23,10 +24,10 @@ xl:grid-cols-4 2xl:grid-cols-4 gap-4">
         id={item.id}
         title={item.title}
         imageUrl={item.imageUrl!}
-        chaptersLength={item.chapters.length}
+        chaptersLength={item.Chapters.length}
         price={item.price!}
         progress={item.progress}
-        category={item?.category?.name!}
+        category={item?.Category?.name!}
         />
      ))}
 </div>
