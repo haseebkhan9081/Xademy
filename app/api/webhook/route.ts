@@ -27,6 +27,7 @@ if(event.type==="checkout.session.completed"){
     if(!userId||!courseId){
         return new NextResponse(`webhook error:Missing meta data`,{status:400})
     }
+    console.log("[WEBHOOK ABOUT TO INSERT INTO PURCHASE]");
     await db.$queryRaw`insert into Purchase(userId,courseId) values(${userId},${courseId})`
 }else{
     return new NextResponse(`webhook Error:unhandled event type ${event.type}`,{status:200});
