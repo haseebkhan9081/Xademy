@@ -14,7 +14,7 @@ const isTeacher=pathname.startsWith("/teacher");
 const isSearcPage=pathname==="/search";
 return <>
 {isSearcPage&&(
-<div className="hidden md:block w-full">
+<div className="hidden p-6 md:block w-full">
 <SearchInput/>
  </div>
 )}

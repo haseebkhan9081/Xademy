@@ -29,7 +29,7 @@ const Categories= ({Categories}:CategoriesProps)=>
  
 
  
- return <div className="flex items-centergap-x-2 overflow-x-auto pb-2">
+ return <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
   {Categories.map((item,index)=>{
    return ( <CategoryItem
     label={item.name}
