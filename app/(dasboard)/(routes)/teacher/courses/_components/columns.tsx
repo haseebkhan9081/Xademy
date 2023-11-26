@@ -98,7 +98,7 @@ export const columns: ColumnDef<Course>[] = [
         id: "actions",
         cell: ({ row }) => {
           const {id} = row.original
-          const router=useRouter();
+          
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

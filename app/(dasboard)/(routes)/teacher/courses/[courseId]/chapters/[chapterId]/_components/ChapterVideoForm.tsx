@@ -187,7 +187,7 @@ className="h-10 w-10 text-slate-500"
   <p
   className="text-xs text-muted-foreground
   mt-4">
-if the video doesn't load ,refresh .the video may take a couple of  minutes to process
+if the video doesnt load ,refresh .the video may take a couple of  minutes to process
   </p>
  )}
  </div>

@@ -170,6 +170,7 @@ items-center">
  ">
 {(Attachments?.length===0||!Attachments)  &&(
   <p
+  
   className="text-sm mt-2
   text-slate-500 italic">
 not attachments
@@ -181,8 +182,9 @@ not attachments
 <div
 className="
 space-y-2">
-{Attachments?.map((attachemnt)=>(
+{Attachments?.map((attachemnt,index)=>(
   <div
+  key={index}
   className="
   bg-sky-100
   border-sky-200
