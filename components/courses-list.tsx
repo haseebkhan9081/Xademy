@@ -24,14 +24,14 @@ xl:grid-cols-4 2xl:grid-cols-4 gap-4">
         id={item.id}
         title={item.title}
         imageUrl={item.imageUrl!}
-        chaptersLength={item.Chapters.length}
+        chaptersLength={item?.Chapters?.length}
         price={item.price!}
         progress={item.progress}
         category={item?.Category?.name!}
         />
      ))}
 </div>
-{items.length===0 && (
+{items?.length===0 && (
     <div className="text-center text-sm text-muted-foreground mt-10 ">
         No Courses found
     </div>
