@@ -29,7 +29,7 @@ if(!course){
 const chapters:Chapter[]=await db.$queryRaw`
 select * from Chapter where courseId=${courseId}`;
 let positon=1;
-let position=(chapters[chapters.length-1].position)+1;
+let position=(chapters?.[chapters.length-1]?.position)+1||1;
 if(position){
     positon=position
 }
